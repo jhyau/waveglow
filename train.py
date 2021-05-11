@@ -41,6 +41,7 @@ from mel2samp import Mel2Samp
 def load_checkpoint(checkpoint_path, model, optimizer):
     assert os.path.isfile(checkpoint_path)
     checkpoint_dict = torch.load(checkpoint_path, map_location='cpu')
+    #checkpoint_dict = torch.jit.load(checkpoint_path, map_location='cpu')
     iteration = checkpoint_dict['iteration']
     optimizer.load_state_dict(checkpoint_dict['optimizer'])
     model_for_loading = checkpoint_dict['model']
