@@ -33,6 +33,13 @@ Visit our [website] for audio samples.
 
 3. Install [Apex]
 
+Note: when installing Apex for linux, if get error using the first command, try the python-only build command:
+
+```
+pip install -v --disable-pip-version-check --no-cache-dir ./
+```
+
+when following the quick start instructions in apex.
 
 ## Generate audio with our pre-existing model
 
