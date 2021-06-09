@@ -1,8 +1,8 @@
 import sys
 sys.path.append('tacotron2')
 import torch
-#from layers import STFT
-from tacotron2.stft import STFT
+from layers import STFT
+#from tacotron2.stft import STFT
 
 class Denoiser(torch.nn.Module):
     """ Removes model bias from audio produced with waveglow """
