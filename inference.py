@@ -47,9 +47,11 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
     for i, file_path in enumerate(mel_files):
         file_name = os.path.splitext(os.path.basename(file_path))[0]
         mel = torch.load(file_path)
+        print(f"original mel shape: {mel.shape}")
         mel = torch.autograd.Variable(mel.cuda())
         mel = torch.unsqueeze(mel, 0)
         mel = mel.half() if is_fp16 else mel
+        print(f"mel shape right before using waveglow: {mel.shape}")
         with torch.no_grad():
             audio = waveglow.infer(mel, sigma=sigma)
             if denoiser_strength > 0:
@@ -58,6 +60,8 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
         audio = audio.squeeze()
         audio = audio.cpu().numpy()
         audio = audio.astype('int16')
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
         audio_path = os.path.join(
             output_dir, "{}_synthesis.wav".format(file_name))
         write(audio_path, sampling_rate, audio)
