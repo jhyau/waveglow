@@ -65,9 +65,12 @@ class Mel2Samp(torch.utils.data.Dataset):
     This is the main class that calculates the spectrogram and returns the
     spectrogram, audio pair.
     """
-    def __init__(self, training_files, segment_length, filter_length,
-                 hop_length, win_length, sampling_rate, mel_fmin, mel_fmax):
-        self.audio_files = files_to_list(training_files)
+    def __init__(self, training_files, validation_files, segment_length, filter_length,
+                 hop_length, win_length, sampling_rate, mel_fmin, mel_fmax, train=True):
+        if train:
+            self.audio_files = files_to_list(training_files)
+        else:
+            self.audio_files = files_to_list(validation_files)
         random.seed(1234)
         random.shuffle(self.audio_files)
         self.stft = TacotronSTFT(filter_length=filter_length,

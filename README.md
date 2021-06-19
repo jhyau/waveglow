@@ -61,6 +61,8 @@ with fused residual and skip connections.
    ls data/*.wav | head -n10 > test_files.txt
    ```
 
+Note that the above commands splits the list of .wav files in the directory such that `test_files.txt` has 10 files, and the rest are in `train_files.txt` 
+
 3. Train your WaveGlow networks
 
    ```command

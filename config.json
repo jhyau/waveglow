@@ -13,7 +13,8 @@
         "with_tensorboard": false
     },
     "data_config": {
-        "training_files": "train_files.txt",
+        "training_files": "asmr_train_files.txt",
+	"validation_files": "asmr_test_files.txt",
         "segment_length": 32000,
         "sampling_rate": 44100,
         "filter_length": 1024,
