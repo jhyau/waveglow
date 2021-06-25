@@ -78,6 +78,8 @@ Note that the above commands splits the list of .wav files in the directory such
 
    `python mel2samp.py -f test_files.txt -o . -c config.json`
 
+Note: For the output directory, don't include the final backslash (e.g. can have something like `-o data/asmr` but don't do something like `-o data/asmr/`)
+
 5. Do inference with your network
 
    ```command

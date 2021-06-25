@@ -143,8 +143,11 @@ if __name__ == "__main__":
 
     for filepath in filepaths:
         audio, sr = load_wav_to_torch(filepath)
+        print(f"original audio shape: {audio.shape}")
         # Sam's fix
-        audio = audio[:, 0]
+        if len(audio.size()) >= 2:
+            audio = audio[:, 0]
+        print(f"fixed audio shape: {audio.shape}")
         melspectrogram = mel2samp.get_mel(audio)
         filename = os.path.basename(filepath)
         new_filepath = args.output_dir + '/' + filename + '.pt'
