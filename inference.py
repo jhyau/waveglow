@@ -29,7 +29,7 @@ from scipy.io.wavfile import write
 import torch
 from mel2samp import files_to_list, MAX_WAV_VALUE
 from denoiser import Denoiser
-
+import numpy as np
 
 def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
          denoiser_strength):
@@ -46,7 +46,13 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
 
     for i, file_path in enumerate(mel_files):
         file_name = os.path.splitext(os.path.basename(file_path))[0]
-        mel = torch.load(file_path)
+        if file_path.find('.pt') != -1:
+            print('load by torch')
+            mel = torch.load(file_path)
+        elif file_path.find('.npy') != -1:
+            print('load by numpy')
+            mel = np.load(file_path)
+            mel = torch.from_numpy(mel)
         print(f"original mel shape: {mel.shape}")
         mel = torch.autograd.Variable(mel.cuda())
         mel = torch.unsqueeze(mel, 0)
