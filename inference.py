@@ -46,6 +46,7 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
 
     for i, file_path in enumerate(mel_files):
         file_name = os.path.splitext(os.path.basename(file_path))[0]
+        print('Loading file: ', file_path)
         if file_path.find('.pt') != -1:
             print('load by torch')
             mel = torch.load(file_path)
