@@ -54,6 +54,10 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
             print('load by numpy')
             mel = np.load(file_path)
             mel = torch.from_numpy(mel)
+        # Only get a certain time range
+        #offset_secs = 1.17
+        #example_secs = 1
+        #mel = mel[:, int(offset_secs * 172):int(offset_secs*172 + example_secs*172)]
         print(f"original mel shape: {mel.shape}")
         mel = torch.autograd.Variable(mel.cuda())
         mel = torch.unsqueeze(mel, 0)
