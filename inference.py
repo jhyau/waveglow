@@ -24,7 +24,14 @@
 #  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # *****************************************************************************
+# Adding path to tacotron2 submodule
+import sys
+
+# Original imports
 import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'../'))
+sys.path.append(os.path.join(os.path.dirname(__file__),'.'))
+
 from scipy.io.wavfile import write
 import torch
 from mel2samp import files_to_list, MAX_WAV_VALUE
