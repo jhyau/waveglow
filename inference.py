@@ -80,7 +80,7 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
         audio = audio.cpu().numpy()
         audio = audio.astype('int16')
         if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+            os.makedirs(output_dir, exist_ok=True)
         audio_path = os.path.join(
             output_dir, "{}_synthesis.wav".format(file_name))
         write(audio_path, sampling_rate, audio)
