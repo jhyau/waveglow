@@ -12,3 +12,4 @@ tensorboardX
 Unidecode
 #Unidecode==1.0.22
 pillow
+#wandb

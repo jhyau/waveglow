@@ -1,8 +1,8 @@
 {
     "train_config": {
         "fp16_run": true,
-        "output_directory": "checkpoints",
-        "epochs": 100000,
+        "output_directory": "/juno/u/jyau/asmr-video-to-sound/waveglow/asmr-tapping-cleaned-checkpoints",
+        "epochs": 1000,
         "learning_rate": 1e-4,
         "sigma": 1.0,
         "iters_per_checkpoint": 2000,
@@ -11,7 +11,7 @@
         "seed": 1234,
         "checkpoint_path": "",
         "with_tensorboard": false,
-	"wandb_project": "asmr-reconstruct"
+	"wandb_project": "asmr-tapping-materials-cleaned"
     },
     "data_config": {
         "training_files": "/juno/u/jyau/regnet/filelists/tapping_data_cleaned_train.txt",

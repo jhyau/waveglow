@@ -60,7 +60,7 @@ def save_checkpoint(model, optimizer, learning_rate, iteration, filepath):
                 'optimizer': optimizer.state_dict(),
                 'learning_rate': learning_rate}, filepath)
 
-def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
+def train(num_gpus, rank, group_name, root_path, audio_file_suffix, output_directory, epochs, learning_rate,
           sigma, iters_per_checkpoint, batch_size, valid_batch_size, seed, fp16_run,
           checkpoint_path, with_tensorboard, wandb_project):
     torch.manual_seed(seed)
@@ -91,8 +91,8 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
                                                       optimizer)
         iteration += 1  # next iteration is iteration + 1
 
-    trainset = Mel2Samp(**data_config)
-    validset = Mel2Samp(train=False, **data_config)
+    trainset = Mel2Samp(**data_config, root_path=root_path, file_suffix=audio_file_suffix)
+    validset = Mel2Samp(train=False, root_path=root_path, file_suffix=audio_file_suffix, **data_config)
     # =====START: ADDED FOR DISTRIBUTED======
     train_sampler = DistributedSampler(trainset) if num_gpus > 1 else None
     valid_sampler = DistributedSampler(validset) if num_gpus > 1 else None
@@ -223,6 +223,8 @@ if __name__ == "__main__":
                         help='rank of process for distributed')
     parser.add_argument('-g', '--group_name', type=str, default='',
                         help='name of group for distributed')
+    parser.add_argument('--root_path', default=None, type=str, help="root path of audio")
+    parser.add_argument('--audio_suffix', default=None, type=str, help="suffix of audio wave files")
     args = parser.parse_args()
 
     # Parse configs.  Globals nicer in this case
@@ -249,4 +251,4 @@ if __name__ == "__main__":
 
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = False
-    train(num_gpus, args.rank, args.group_name, **train_config)
+    train(num_gpus, args.rank, args.group_name, args.root_path, args.audio_suffix, **train_config)

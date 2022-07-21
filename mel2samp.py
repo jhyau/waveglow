@@ -46,7 +46,7 @@ from tacotron2.layers import TacotronSTFT
 
 MAX_WAV_VALUE = 32768.0
 
-def files_to_list(filename):
+def files_to_list(filename, root_path=None, file_suffix=None):
     """
     Takes a text file of filenames and makes a list of filenames
     """
@@ -54,6 +54,20 @@ def files_to_list(filename):
         files = f.readlines()
 
     files = [f.rstrip() for f in files]
+
+    if file_suffix:
+        print("Adding a suffix to files: ", file_suffix)
+        new_files = []
+        for f in files:
+            new_files.append(f+file_suffix)
+        files = new_files
+
+    if root_path:
+        print("Joining with root path: ", root_path)
+        root_files = []
+        for f in files:
+            root_files.append(os.path.join(root_path, f))
+        files = root_files
     return files
 
 def load_wav_to_torch(full_path):
@@ -71,11 +85,12 @@ class Mel2Samp(torch.utils.data.Dataset):
     spectrogram, audio pair.
     """
     def __init__(self, training_files, validation_files, segment_length, filter_length,
-                 hop_length, win_length, sampling_rate, mel_fmin, mel_fmax, train=True):
+                 hop_length, win_length, sampling_rate, mel_fmin, mel_fmax, train=True,
+                 root_path=None, file_suffix=None):
         if train:
-            self.audio_files = files_to_list(training_files)
+            self.audio_files = files_to_list(training_files, root_path=root_path, file_suffix=file_suffix)
         else:
-            self.audio_files = files_to_list(validation_files)
+            self.audio_files = files_to_list(validation_files, root_path=root_path, file_suffix=file_suffix)
         random.seed(1234)
         random.shuffle(self.audio_files)
         self.stft = TacotronSTFT(filter_length=filter_length,
